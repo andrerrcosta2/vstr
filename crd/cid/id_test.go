@@ -16,11 +16,11 @@ const (
 )
 
 func TestNewId(t *testing.T) {
-	expectedID := sha1.Sum([]byte(tk1))
+	exp := sha1.Sum([]byte(tk1))
 	id := NewId(tk1)
 	var idArr [20]byte
 	copy(idArr[:], id[:])
-	assert.Equal(t, expectedID, idArr, "NewId() should generate the correct ID")
+	assert.Equal(t, exp, idArr, "NewId() should generate the correct ID")
 }
 
 func TestEq(t *testing.T) {
@@ -68,24 +68,24 @@ func TestFbi_Tbi(t *testing.T) {
 func TestStrt(t *testing.T) {
 	id := NewId(tk1)
 	strt := id.Strt(5)
-	expected := new(big.Int).Add(id.Tbi(), new(big.Int).Lsh(big.NewInt(1), 5))
-	expected.Mod(expected, new(big.Int).Lsh(big.NewInt(1), M))
+	exp := new(big.Int).Add(id.Tbi(), new(big.Int).Lsh(big.NewInt(1), 5))
+	exp.Mod(exp, new(big.Int).Lsh(big.NewInt(1), M))
 
-	assert.Equal(t, expected, strt.Tbi(), "Strt() should calculate the correct start ID")
+	assert.Equal(t, exp, strt.Tbi(), "Strt() should calculate the correct start ID")
 }
 
 func TestString(t *testing.T) {
 	id := NewId(tk1)
-	expected := hex.EncodeToString(id[:])
-	assert.Equal(t, expected, id.String(), "String() should return the correct hex representation")
+	exp := hex.EncodeToString(id[:])
+	assert.Equal(t, exp, id.String(), "String() should return the correct hex representation")
 }
 
 func TestBytesToId(t *testing.T) {
 	id := NewId(tk1)
 	bytes := id[:]
-	convertedId, err := BytesToId(bytes)
+	_id, err := BytesToId(bytes)
 	assert.NoError(t, err, "BytesToId() should not return an error for correct byte length")
-	assert.Equal(t, id, convertedId, "BytesToId() should return the correct ID")
+	assert.Equal(t, id, _id, "BytesToId() should return the correct ID")
 
 	_, err = BytesToId([]byte("short"))
 	assert.Error(t, err, "BytesToId() should return an error for incorrect byte length")
