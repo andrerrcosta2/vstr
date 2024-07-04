@@ -3,95 +3,108 @@
 package nod
 
 import (
-	"crypto/sha1"
+	"github.com/andrerrcosta/vstr/crd/cid"
+	"github.com/andrerrcosta/vstr/pb"
 )
-
-const (
-	M = 160
-)
-
-type Id [M / 8]byte
-
-func Nid(key string) Id {
-	return Id(sha1.Sum([]byte(key)))
-}
 
 type Fge struct {
-	str Id
-	Nod *Nod
+	strt cid.Id
+	nod  *Nod
+}
+
+func NewFge(str cid.Id, nod *Nod) *Fge {
+	return &Fge{
+		strt: str,
+		nod:  nod,
+	}
+}
+
+func (f *Fge) Pbf() *pb.Fge {
+	return &pb.Fge{
+		Str: f.strt[:],
+		Nod: f.nod.Pbf(),
+	}
 }
 
 type Nod struct {
-	ID  Id
-	IP  string
-	Pt  int
+	ID  cid.Id
+	Ip  string
+	Pt  int32
 	Fgs []Fge
 	Pre *Nod
 	Suc *Nod
-}
-
-// Jn jn
-func (n *Nod) Jn(exn *Nod) {
-	if exn != nil {
-		n.Suc = exn.fs(n.ID)
-	} else {
-		// Setup as a ring
-		n.Suc = n
-		n.Pre = n
-	}
-	n.ift(exn)
-	n.unet()
+	Dat map[string][]byte
 }
 
 // Stb Stab
 func (n *Nod) Stb() {
 	x := n.Suc.Pre
-	if x != nil && btw(n.ID, x.ID, n.Suc.ID) {
+	if x != nil && x.ID.Btw(n.ID, n.Suc.ID) {
 		n.Suc = x
 	}
 	n.Suc.nfy(n)
 }
 
-// Sucf Suc
-func (n *Nod) Sucf(i Id) *Nod {
-	if btw(n.ID, i, n.Suc.ID) {
-		return n.Suc
-	} else {
-		cpn := n.cpn(i)
-		return cpn.fs(i)
-	}
-}
-
 // Cpn cpn
-func (n *Nod) cpn(i Id) *Nod {
-	for k := M - 1; k >= 0; k-- {
-		if btw(n.ID, n.Fgs[k].Nod.ID, i) {
-			return n.Fgs[k].Nod
+func (n *Nod) Cpn(nd Nod) *Nod {
+	for _, e := range n.Fgs {
+		if e.nod.ID.Btw(n.ID, nd.ID) {
+			return e.nod
 		}
 	}
 	return n
 }
 
-// fs fds
-func (n *Nod) fs(i Id) *Nod {
+func (n *Nod) Ffe(id cid.Id) *Nod {
+	for _, e := range n.Fgs {
+		if e.strt.Btw(n.ID, id) {
+			return e.nod
+		}
+	}
 	return nil
-}
-
-// ift ift
-func (n *Nod) ift(t *Nod) {
-	//t.Fgs[]
 }
 
 // nfy nfy
 func (n *Nod) nfy(t *Nod) {
-
+	// TODO:
 }
 
-// unet unry
-func (n *Nod) unet() {
-
+func (n Nod) Pbf() *pb.Nod {
+	pbn := &pb.Nod{
+		Id:   n.ID[:],
+		Ip:   n.Ip,
+		Port: n.Pt,
+		Fgs:  make([]*pb.Fge, len(n.Fgs)),
+		Dat:  n.Dat,
+	}
+	for i, fge := range n.Fgs {
+		pbn.Fgs[i] = fge.Pbf()
+	}
+	if n.Pre != nil {
+		pbn.Pre = &pb.Nod{
+			Id:   n.Pre.ID[:],
+			Ip:   n.Pre.Ip,
+			Port: n.Pre.Pt,
+		}
+	}
+	if n.Suc != nil {
+		pbn.Suc = &pb.Nod{
+			Id:   n.Suc.ID[:],
+			Ip:   n.Suc.Ip,
+			Port: n.Suc.Pt,
+		}
+	}
+	return pbn
 }
 
-func btw(pre, nod, suc Id) bool {
-	return false
+func Dbf(n pb.Nod) (*Nod, error) {
+	id, err := cid.BytesToId(n.Id)
+	if err != nil {
+		return nil, err
+	}
+	return &Nod{
+		ID: id,
+		Ip: n.Ip,
+		Pt: n.Port,
+	}, nil
 }

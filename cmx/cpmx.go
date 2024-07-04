@@ -1,3 +1,5 @@
+// Andre R. R. Costa *** github.com/andrerrcosta2
+
 package cmx
 
 import "google.golang.org/protobuf/proto"

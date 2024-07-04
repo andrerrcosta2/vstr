@@ -1,4 +1,6 @@
-package crd
+// Andre R. R. Costa *** github.com/andrerrcosta2
+
+package cid
 
 import (
 	"crypto/sha1"
