@@ -14,23 +14,23 @@ type mdlr struct {
 	Err  error
 }
 
-func (d *mdlr) Dial(address string) (net.Conn, error) {
+func (d *mdlr) Dial(addr string) (net.Conn, error) {
 	return d.Conn, d.Err
 }
 
 type mcon struct {
 	mock.Mock
-	ReadData  []byte
-	WriteData []byte
+	rd []byte
+	wd []byte
 }
 
 func (c mcon) Read(b []byte) (n int, err error) {
-	copy(b, c.ReadData)
-	return len(c.ReadData), nil
+	copy(b, c.rd)
+	return len(c.rd), nil
 }
 
 func (c mcon) Write(b []byte) (n int, err error) {
-	c.WriteData = b
+	c.wd = b
 	return len(b), nil
 }
 

@@ -3,6 +3,7 @@
 package cmx
 
 import (
+	"fmt"
 	"github.com/andrerrcosta2/vstr/cmx/net"
 	"google.golang.org/protobuf/proto"
 )
@@ -18,6 +19,16 @@ func NewDcpmx(dlr net.Dlr) *Dcpms {
 }
 
 func (t *Dcpms) Spm(msg proto.Message, addr string) (proto.Message, error) {
+	if t.dlr == nil {
+		return nil, fmt.Errorf("dialer is nil\n")
+	}
+	if msg == nil {
+		return nil, fmt.Errorf("message is nil\n")
+	}
+	if addr == "" {
+		return nil, fmt.Errorf("address is empty\n")
+	}
+
 	conn, err := t.dlr.Dial(addr)
 	if err != nil {
 		return nil, err
