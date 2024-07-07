@@ -4,9 +4,9 @@ package drl
 
 import (
 	"fmt"
-	"github.com/andrerrcosta/vstr/crd/msg"
-	"github.com/andrerrcosta/vstr/crd/nod"
-	"github.com/andrerrcosta/vstr/pb"
+	"github.com/andrerrcosta2/vstr/crd/msg"
+	"github.com/andrerrcosta2/vstr/crd/nod"
+	"github.com/andrerrcosta2/vstr/pb"
 	"google.golang.org/protobuf/proto"
 )
 

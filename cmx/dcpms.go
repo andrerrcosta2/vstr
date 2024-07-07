@@ -1,22 +1,28 @@
-// Andre R. R. Costa *** github.com/andrerrcosta2
+// Andre R.R. Costa *** github.com/andrerrcosta2 *** andrerrcosta@gmail.com
 
-package tcp
+package cmx
 
 import (
+	"github.com/andrerrcosta2/vstr/cmx/net"
 	"google.golang.org/protobuf/proto"
-	"net"
-	"sync"
 )
 
-type TcpCpmx struct {
-	mt sync.Mutex
+type Dcpms struct {
+	dlr net.Dlr
 }
 
-func Spm(msg proto.Message, addr string) (proto.Message, error) {
-	conn, err := net.Dial("tcp", addr)
+func NewDcpmx(dlr net.Dlr) *Dcpms {
+	return &Dcpms{
+		dlr: dlr,
+	}
+}
+
+func (t *Dcpms) Spm(msg proto.Message, addr string) (proto.Message, error) {
+	conn, err := t.dlr.Dial(addr)
 	if err != nil {
 		return nil, err
 	}
+
 	defer conn.Close()
 
 	buf, err := proto.Marshal(msg)
@@ -34,7 +40,7 @@ func Spm(msg proto.Message, addr string) (proto.Message, error) {
 		return nil, err
 	}
 
-	var res proto.Message
+	res := proto.Clone(msg)
 	if err := proto.Unmarshal(rbf[:rd], res); err != nil {
 		return nil, err
 	}

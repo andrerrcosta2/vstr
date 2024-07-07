@@ -6,8 +6,8 @@ import (
 	"crypto/sha1"
 	"errors"
 	"fmt"
-	"github.com/andrerrcosta/vstr/crd/cid"
-	"github.com/andrerrcosta/vstr/crd/nod"
+	"github.com/andrerrcosta2/vstr/crd/cid"
+	"github.com/andrerrcosta2/vstr/crd/nod"
 	"sync"
 )
 

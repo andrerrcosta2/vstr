@@ -3,8 +3,8 @@
 package lut
 
 import (
-	"github.com/andrerrcosta/vstr/crd/cid"
-	"github.com/andrerrcosta/vstr/crd/nod"
+	"github.com/andrerrcosta2/vstr/crd/cid"
+	"github.com/andrerrcosta2/vstr/crd/nod"
 )
 
 type LUT interface {

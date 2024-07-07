@@ -1,10 +1,10 @@
-// Andre R. R. Costa *** github.com/andrerrcosta2
+// Andre R. R. Costa *** github.com/andrerrcosta2 *** andrerrcosta@gmail.com
 
 package nod
 
 import (
-	"github.com/andrerrcosta/vstr/crd/cid"
-	"github.com/andrerrcosta/vstr/pb"
+	"github.com/andrerrcosta2/vstr/crd/cid"
+	"github.com/andrerrcosta2/vstr/pb"
 )
 
 type Fge struct {

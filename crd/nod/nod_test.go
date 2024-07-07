@@ -2,8 +2,8 @@ package nod
 
 import (
 	"bytes"
-	"github.com/andrerrcosta/vstr/crd/cid"
-	"github.com/andrerrcosta/vstr/pb"
+	"github.com/andrerrcosta2/vstr/crd/cid"
+	"github.com/andrerrcosta2/vstr/pb"
 	"testing"
 )
 
