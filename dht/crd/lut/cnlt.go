@@ -3,11 +3,10 @@
 package lut
 
 import (
-	"crypto/sha1"
 	"errors"
-	"fmt"
 	"github.com/andrerrcosta2/vstr/dht/crd/cid"
 	"github.com/andrerrcosta2/vstr/dht/crd/nod"
+	"net"
 	"sync"
 )
 
@@ -16,18 +15,16 @@ type Cnlt struct {
 	tb map[string]*nod.Nod
 }
 
-func Gid(ip string, pt int32) cid.Id {
-	addr := fmt.Sprintf("%s:%d", ip, pt)
-	return sha1.Sum([]byte(addr))
+func Gid(ip net.IP, pt uint16) cid.Id {
+	return cid.New(ip, pt)
 }
 
-func (t *Cnlt) Add(ip string, pt int32) cid.Id {
+func (t *Cnlt) Add(ip net.IP, pt uint16) cid.Id {
 	id := Gid(ip, pt)
 	n := &nod.Nod{
-		ID:  id,
-		Ip:  ip,
-		Pt:  pt,
-		Fgs: make([]nod.Fge, cid.M),
+		ID: id,
+		Ip: ip,
+		Pt: pt,
 	}
 	t.mt.Lock()
 	t.tb[id.String()] = n

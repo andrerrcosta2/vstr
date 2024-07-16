@@ -17,6 +17,7 @@ import (
 	"github.com/andrerrcosta2/vstr/nmm/srcfg"
 	"github.com/andrerrcosta2/vstr/nwk"
 	"github.com/andrerrcosta2/vstr/srd/ret"
+	"net"
 	"sync"
 )
 
@@ -29,11 +30,12 @@ type crdv struct {
 	hsts *hchk.Hchks[*nwu.Ureg]
 }
 
-func New(cfg dhtcfg.CrdCfg, msr dhtcmx.Nmr) *crdv {
+func New(cfg dhtcfg.CrdCfg, msr dhtcmx.Nmr, ip net.IP, port uint16) *crdv {
 	urgs := nwu.NewUrstk(100)
+	nodeId := cid.New(ip, port)
 	return &crdv{
 		cfg:  cfg,
-		nod:  nod.Nod{},
+		nod:  *nod.NewNod(nodeId, ip, port),
 		msr:  msr,
 		lut:  lut.NewCnlt(),
 		urgs: urgs,
@@ -171,7 +173,7 @@ func (c *crdv) Jn() error {
 	}
 
 	if n != nil {
-		c.lut.Add(n.Ip, n.Pt)
+		c.lut.Add(n.Ip, n.Pt) // TODO: c.lut.Del(n.Ip, n.Pt)
 		c.nod.Suc = n
 		// TODO: c.nod.Pre
 	} else {

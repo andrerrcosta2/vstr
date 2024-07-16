@@ -6,38 +6,20 @@ import (
 	"fmt"
 	"github.com/andrerrcosta2/vstr/dht/crd/cid"
 	"github.com/andrerrcosta2/vstr/pb"
+	"net"
 )
-
-type Fge struct {
-	Strt cid.Id
-	Nod  *Nod
-}
-
-func NewFge(str cid.Id, nod *Nod) *Fge {
-	return &Fge{
-		Strt: str,
-		Nod:  nod,
-	}
-}
-
-func (f *Fge) Pbf() *pb.Fge {
-	return &pb.Fge{
-		Str: f.Strt[:],
-		Nod: f.Nod.Pbf(),
-	}
-}
 
 type Nod struct {
 	ID  cid.Id
-	Ip  string
-	Pt  int32
+	Ip  net.IP
+	Pt  uint16
 	Fgs []*Fge
 	Pre *Nod
 	Suc *Nod
 	Dat map[string][]byte
 }
 
-func NewNod(id cid.Id, ip string, pt int32) *Nod {
+func NewNod(id cid.Id, ip net.IP, pt uint16) *Nod {
 	return &Nod{
 		ID:  id,
 		Ip:  ip,
@@ -107,8 +89,8 @@ func (n *Nod) Gfaddr() string {
 func (n *Nod) Pbf() *pb.Nod {
 	pbn := &pb.Nod{
 		Id:   n.ID[:],
-		Ip:   n.Ip,
-		Port: n.Pt,
+		Ip:   n.Ip.String(),
+		Port: int32(n.Pt),
 		Fgs:  make([]*pb.Fge, len(n.Fgs)),
 		Dat:  n.Dat,
 	}
@@ -118,15 +100,15 @@ func (n *Nod) Pbf() *pb.Nod {
 	if n.Pre != nil {
 		pbn.Pre = &pb.Nod{
 			Id:   n.Pre.ID[:],
-			Ip:   n.Pre.Ip,
-			Port: n.Pre.Pt,
+			Ip:   n.Pre.Ip.String(),
+			Port: int32(n.Pre.Pt),
 		}
 	}
 	if n.Suc != nil {
 		pbn.Suc = &pb.Nod{
 			Id:   n.Suc.ID[:],
-			Ip:   n.Suc.Ip,
-			Port: n.Suc.Pt,
+			Ip:   n.Suc.Ip.String(),
+			Port: int32(n.Suc.Pt),
 		}
 	}
 	return pbn
@@ -139,7 +121,7 @@ func Dbf(n *pb.Nod) (*Nod, error) {
 	}
 	return &Nod{
 		ID: id,
-		Ip: n.Ip,
-		Pt: n.Port,
+		Ip: net.ParseIP(n.Ip),
+		Pt: uint16(n.Port),
 	}, nil
 }

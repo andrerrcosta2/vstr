@@ -10,7 +10,7 @@ import (
 )
 
 func TestNewFge(t *testing.T) {
-	id := cid.NewId("test")
+	id := cid.New("test")
 	nod := &Nod{
 		ID: id,
 		Ip: "127.0.0.1",
@@ -26,7 +26,7 @@ func TestNewFge(t *testing.T) {
 }
 
 func TestFgePbf(t *testing.T) {
-	id := cid.NewId("test")
+	id := cid.New("test")
 	nod := &Nod{
 		ID: id,
 		Ip: "127.0.0.1",
@@ -43,7 +43,7 @@ func TestFgePbf(t *testing.T) {
 }
 
 func TestNodPbf(t *testing.T) {
-	id := cid.NewId("test")
+	id := cid.New("test")
 	nod := &Nod{
 		ID: id,
 		Ip: "127.0.0.1",
@@ -59,7 +59,7 @@ func TestNodPbf(t *testing.T) {
 }
 
 func TestDbf(t *testing.T) {
-	id := cid.NewId("test")
+	id := cid.New("test")
 	pbn := pb.Nod{
 		Id:   id[:],
 		Ip:   "127.0.0.1",

@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"math/big"
+	"net"
 )
 
 const (
@@ -15,8 +16,9 @@ const (
 
 type Id [M / 8]byte
 
-func NewId(key string) Id {
-	return sha1.Sum([]byte(key))
+func New(ip net.IP, port uint16) Id {
+	addr := append(ip, byte(port>>8), byte(port))
+	return sha1.Sum(addr)
 }
 
 func (id Id) Eq(other Id) bool {
