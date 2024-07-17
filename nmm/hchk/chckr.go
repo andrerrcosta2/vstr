@@ -8,12 +8,12 @@ import (
 	"github.com/andrerrcosta2/vstr/srd/ret"
 )
 
-type Chckr[T nwk.NwkAddr] struct {
+type Chckr struct {
 	cfg srcfg.Cnmm
 	dlr dlr.Dlr
 }
 
-func (c *Chckr[T]) Chk(addr T) error {
+func (c *Chckr) Chk(addr nwk.NwkAddr) error {
 	conn, err := ret.Rt(c.cfg.Att, c.cfg.Dl, func() (dlr.Conn, error) {
 		return c.dlr.Dlt(addr.Gfaddr(), c.cfg.Intv)
 	})
@@ -22,4 +22,11 @@ func (c *Chckr[T]) Chk(addr T) error {
 	}
 	defer dlr.Cls(conn)
 	return nil
+}
+
+func NewChckr(cfg srcfg.Cnmm, dlr dlr.Dlr) *Chckr {
+	return &Chckr{
+		cfg: cfg,
+		dlr: dlr,
+	}
 }

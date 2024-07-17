@@ -1,5 +1,7 @@
 package hchk
 
-type Nhckr interface {
-	Chk(tgt any) error
+import "github.com/andrerrcosta2/vstr/nwk"
+
+type Hchkr[T nwk.NwkAddr] interface {
+	Chk(tgt T) error
 }

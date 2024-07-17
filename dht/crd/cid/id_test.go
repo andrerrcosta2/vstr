@@ -36,14 +36,14 @@ func TestLt(t *testing.T) {
 	id1 := New(tk1)
 	id2 := New(tk2)
 
-	assert.Equal(t, id1.Lt(id2), id1.Tbi().Cmp(id2.Tbi()) < 0, "Lt() should return correct comparison")
+	assert.Equal(t, id1.Lt(id2), id1.Big().Cmp(id2.Big()) < 0, "Lt() should return correct comparison")
 }
 
 func TestGt(t *testing.T) {
 	id1 := New(tk1)
 	id2 := New(tk2)
 
-	assert.Equal(t, id1.Gt(id2), id1.Tbi().Cmp(id2.Tbi()) > 0, "Gt() should return correct comparison")
+	assert.Equal(t, id1.Gt(id2), id1.Big().Cmp(id2.Big()) > 0, "Gt() should return correct comparison")
 }
 
 func TestBtw(t *testing.T) {
@@ -62,16 +62,16 @@ func TestBtw(t *testing.T) {
 func TestFbi_Tbi(t *testing.T) {
 	bi := big.NewInt(123456789)
 	id := Fbi(bi)
-	assert.Equal(t, bi, id.Tbi(), "Fbi() and Tbi() should be consistent")
+	assert.Equal(t, bi, id.Big(), "Fbi() and Big() should be consistent")
 }
 
 func TestStrt(t *testing.T) {
 	id := New(tk1)
 	strt := id.Strt(5)
-	exp := new(big.Int).Add(id.Tbi(), new(big.Int).Lsh(big.NewInt(1), 5))
+	exp := new(big.Int).Add(id.Big(), new(big.Int).Lsh(big.NewInt(1), 5))
 	exp.Mod(exp, new(big.Int).Lsh(big.NewInt(1), M))
 
-	assert.Equal(t, exp, strt.Tbi(), "Strt() should calculate the correct start ID")
+	assert.Equal(t, exp, strt.Big(), "Strt() should calculate the correct start ID")
 }
 
 func TestString(t *testing.T) {

@@ -9,6 +9,7 @@ import (
 	"github.com/andrerrcosta2/vstr/dht/crd/cid"
 	"github.com/andrerrcosta2/vstr/dht/crd/nod"
 	"github.com/stretchr/testify/assert"
+	"net"
 	"sync"
 	"testing"
 )
@@ -22,7 +23,7 @@ const (
 
 func TestGid(t *testing.T) {
 	exp := sha1.Sum([]byte(fmt.Sprintf("%s:%d", testIP1, testPort1)))
-	id := Gid(testIP1, testPort1)
+	id := Gid(net.ParseIP(testIP1), testPort1)
 	var idArr [20]byte
 	copy(idArr[:], id[:])
 	assert.Equal(t, exp, idArr, "Gid() should generate the correct ID")
@@ -35,8 +36,8 @@ func TestCnlt_AddAndGet(t *testing.T) {
 		tb: tb,
 	}
 
-	id1 := tbl.Add(testIP1, testPort1)
-	id2 := tbl.Add(testIP2, testPort2)
+	id1 := tbl.Add(net.ParseIP(testIP1), testPort1)
+	id2 := tbl.Add(net.ParseIP(testIP2), testPort2)
 
 	n1, err := tbl.Get(id1)
 	assert.NoError(t, err, "Get() should not return an error for existing node")

@@ -3,6 +3,7 @@
 package cid
 
 import (
+	"crypto/rand"
 	"crypto/sha1"
 	"encoding/hex"
 	"fmt"
@@ -66,12 +67,16 @@ func Fbi(bi *big.Int) Id {
 	return id
 }
 
-func (id Id) Tbi() *big.Int {
+func (id Id) Big() *big.Int {
 	return new(big.Int).SetBytes(id[:])
 }
 
+func (id Id) Byt() []byte {
+	return id[:]
+}
+
 func (id Id) Strt(i uint) Id {
-	idi := id.Tbi()
+	idi := id.Big()
 	ofs := new(big.Int).Lsh(big.NewInt(1), i) // 2^i
 	rsz := new(big.Int).Lsh(big.NewInt(1), M) // 2^M
 	strt := new(big.Int).Add(idi, ofs)
@@ -90,6 +95,15 @@ func (id Id) Vld() bool {
 
 func (id Id) String() string {
 	return hex.EncodeToString(id[:])
+}
+
+func Rdm() (Id, error) {
+	var id Id
+	_, err := rand.Read(id[:])
+	if err != nil {
+		return id, fmt.Errorf("Rdm failed: %w", err)
+	}
+	return id, nil
 }
 
 func BytesToId(bytes []byte) (Id, error) {

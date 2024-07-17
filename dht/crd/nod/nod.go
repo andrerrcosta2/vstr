@@ -53,19 +53,6 @@ func (n *Nod) Ffe(id cid.Id) *Nod {
 	return nil
 }
 
-func (n *Nod) Hfe() *Nod {
-	var hid cid.Id
-	var out *Nod
-
-	for _, entry := range n.Fgs {
-		if entry.Strt.Btw(hid, n.ID) {
-			hid = entry.Strt
-			out = entry.Nod
-		}
-	}
-	return out
-}
-
 func (n *Nod) Fgh() bool {
 	if n.Fgs == nil {
 		return false

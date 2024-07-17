@@ -7,6 +7,7 @@ import (
 	"github.com/andrerrcosta2/vstr/pb"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"net"
 	"testing"
 )
 
@@ -23,7 +24,7 @@ func TestRsc(t *testing.T) {
 		{
 			msr: nms,
 			ref: []byte{0x00, 0xAA, 0x3F, 0x00},
-			bts: &nod.Nod{Ip: "192.168.0.0", Pt: 8080},
+			bts: &nod.Nod{Ip: net.ParseIP("192.168.0.0"), Pt: 8080},
 			rms: pb.Nms{
 				Type: "test-res",
 				Id:   []byte{0x00, 0xAA, 0x3F, 0x00},
@@ -39,13 +40,13 @@ func TestRsc(t *testing.T) {
 				Id:   []byte{0x00, 0xAA, 0x3F, 0x00},
 				Data: []byte{0x03, 0x07, 0x09, 0x2F},
 			},
-			bts: &nod.Nod{Ip: "192.168.0.2", Pt: 8081},
+			bts: &nod.Nod{Ip: net.ParseIP("192.168.0.2"), Pt: 8081},
 			exp: fmt.Errorf("ref cannot be nil"),
 		},
 		{
 			msr: nil,
 			ref: []byte{0x00, 0xAA, 0x3F, 0x00},
-			bts: &nod.Nod{Ip: "192.168.0.2", Pt: 8081},
+			bts: &nod.Nod{Ip: net.ParseIP("192.168.0."), Pt: 8081},
 			rms: pb.Nms{
 				Type: "test-res",
 				Id:   []byte{0x00, 0xAA, 0x3F, 0x00},
@@ -93,8 +94,8 @@ func TestNjn(t *testing.T) {
 	}{
 		{
 			msr: nms,
-			jn:  &nod.Nod{Ip: "192.168.0.0", Pt: 8080},
-			suc: &nod.Nod{Ip: "192.168.0.1", Pt: 8081},
+			jn:  &nod.Nod{Ip: net.ParseIP("192.168.0.0"), Pt: 8080},
+			suc: &nod.Nod{Ip: net.ParseIP("192.168.0.1"), Pt: 8081},
 			rms: pb.Nms{
 				Type: "test-res",
 				Id:   []byte{0x00, 0xAA, 0x3F, 0x00},
@@ -105,7 +106,7 @@ func TestNjn(t *testing.T) {
 		{
 			msr: nms,
 			jn:  nil,
-			suc: &nod.Nod{Ip: "192.168.0.1", Pt: 8081},
+			suc: &nod.Nod{Ip: net.ParseIP("192.168.0.1"), Pt: 8081},
 			rms: pb.Nms{
 				Type: "test-res",
 				Id:   []byte{0x00, 0xAA, 0x3F, 0x00},
@@ -115,7 +116,7 @@ func TestNjn(t *testing.T) {
 		},
 		{
 			msr: nms,
-			jn:  &nod.Nod{Ip: "192.168.0.0", Pt: 8080},
+			jn:  &nod.Nod{Ip: net.ParseIP("192.168.0.1"), Pt: 8080},
 			suc: nil,
 			rms: pb.Nms{
 				Type: "test-res",
@@ -126,8 +127,8 @@ func TestNjn(t *testing.T) {
 		},
 		{
 			msr: nil,
-			jn:  &nod.Nod{Ip: "192.168.0.0", Pt: 8080},
-			suc: &nod.Nod{Ip: "192.168.0.1", Pt: 8081},
+			jn:  &nod.Nod{Ip: net.ParseIP("192.168.0.0"), Pt: 8080},
+			suc: &nod.Nod{Ip: net.ParseIP("192.168.0.1"), Pt: 8081},
 			rms: pb.Nms{
 				Type: "test-res",
 				Id:   []byte{0x00, 0xAA, 0x3F, 0x00},
@@ -139,7 +140,6 @@ func TestNjn(t *testing.T) {
 
 	for _, tc := range tcs {
 		if tc.exp == nil {
-
 			nms.On("Qs", mock.Anything, mock.AnythingOfType("*nod.nod")).Return(tc.rms, nil)
 		}
 		err := Njn(tc.msr, tc.jn, tc.suc)
