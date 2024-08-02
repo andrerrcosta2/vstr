@@ -1,9 +1,9 @@
 package dhtcmx
 
 import (
-	"github.com/andrerrcosta2/vstr/dht/cmn/dhtms"
-	"github.com/andrerrcosta2/vstr/nwk/dlr"
-	"github.com/andrerrcosta2/vstr/pb"
+	"github.com/andrerrcosta2/vstr/vstr/pkg/dht/cmn/dhtms"
+	"github.com/andrerrcosta2/vstr/vstr/pkg/ntk/dlr"
+	"github.com/andrerrcosta2/vstr/vstr/pkg/pb"
 	"google.golang.org/protobuf/proto"
 )
 

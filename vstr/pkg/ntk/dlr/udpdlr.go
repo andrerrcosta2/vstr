@@ -1,8 +1,8 @@
 package udp
 
 import (
-	"github.com/andrerrcosta2/vstr/nwk/dlr"
-	"github.com/andrerrcosta2/vstr/nwk/nwkc"
+	"github.com/andrerrcosta2/vstr/vstr/pkg/ntk/dlr"
+	"github.com/andrerrcosta2/vstr/vstr/pkg/ntk/ntkc"
 	"net"
 	"time"
 )
@@ -18,6 +18,6 @@ func (d *UdpDlr) Dlt(addr string, tout time.Duration) (dlr.Conn, error) {
 }
 
 func (d *UdpDlr) ChkNwk(tout time.Duration) bool {
-	_, err := net.DialTimeout("udp", nwkc.RFA, tout)
+	_, err := net.DialTimeout("udp", ntkc.RFA, tout)
 	return err == nil
 }

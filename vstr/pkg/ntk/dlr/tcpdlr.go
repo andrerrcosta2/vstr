@@ -1,7 +1,7 @@
 package tcp
 
 import (
-	"github.com/andrerrcosta2/vstr/nwk/dlr"
+	"github.com/andrerrcosta2/vstr/vstr/pkg/ntk/dlr"
 	"net"
 	"time"
 )
